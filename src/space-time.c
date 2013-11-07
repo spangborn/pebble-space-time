@@ -215,6 +215,7 @@ static void init (void) {
     .load = window_load,
     .unload = window_unload,
   });
+  window_set_fullscreen(window, true);
   const bool animated = true;
   window_stack_push(window, animated);
 
