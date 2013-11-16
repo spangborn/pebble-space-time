@@ -111,20 +111,24 @@ static void do_draw () {
 
   text_layer_set_text_alignment(batt_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(batt_layer));
+  
+  GRect bt_frame = (GRect) {
+    .origin = {2,2},
+    .size = {8,12}
+  };
+
+  bt_layer = bitmap_layer_create(bt_frame);
+  bt_img = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BTCONN);
+  bitmap_layer_set_bitmap(bt_layer, bt_img);
+  layer_add_child(window_layer, bitmap_layer_get_layer(bt_layer));
 
   // Bluetooth connectivity
-  if (bluetooth_connection_service_peek()) {
-    GRect bt_frame = (GRect) {
-      .origin = {2,2},
-      .size = {8,12}
-    };
+  if (!bluetooth_connection_service_peek()) {
+    layer_remove_from_parent(bitmap_layer_get_layer(bt_layer));
 
-    bt_layer = bitmap_layer_create(bt_frame);
-    bt_img = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BTCONN);
-    bitmap_layer_set_bitmap(bt_layer, bt_img);
-    layer_add_child(window_layer, bitmap_layer_get_layer(bt_layer));
   }  
 
+  
 }
 
 static void do_update_time (struct tm *tick_time) {
